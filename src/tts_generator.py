@@ -6,18 +6,26 @@ using the OpenAI Text-to-Speech API.
 """
 
 import os
+from typing import Optional
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
 
 load_dotenv()
 
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    raise ValueError(
+        "OPENAI_API_KEY is not set."
+    )
+
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=api_key
 )
 
-
-def generate_audio(script: str) -> str:
+def generate_audio(script: str) -> Optional[str]:
     """
     Convert podcast script into an MP3 audio file.
 

@@ -173,8 +173,19 @@ Return exactly this JSON structure:
 Requirements for "summary":
 
 - Summarize only the developments explicitly described in the retrieved news.
-- Mention the selected country only when its name appears explicitly in the retrieved news.
-- Treat the timeframe only as the search period, not as proof that every development occurred during that period.
+- For every development included in the summary, mention the article source
+  and publication date exactly as provided in the retrieved news.
+- Use this format when introducing a development:
+  "According to [Source] ([Published date]), ..."
+- If several articles support the same development, mention the most relevant
+  source and date without repeating the same information.
+- Do not invent, modify or infer a source name or publication date.
+- If the source or publication date is unavailable, state:
+  "Source or publication date not available in the provided news."
+- Mention the selected country only when its name appears explicitly
+  in the retrieved news.
+- Treat the timeframe only as the search period, not as proof that every
+  development occurred during that period.
 - Do not localize general European news to the selected country.
 - Explain the context clearly.
 - Keep it concise and suitable for an executive audience.
