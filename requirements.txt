@@ -1,0 +1,17 @@
+# User interface
+gradio
+
+# OpenAI API for LLM processing and Text-to-Speech
+openai
+
+# Load API keys from the local .env file
+python-dotenv
+
+# Retrieve web content and call news APIs
+requests
+
+# Optional article text extraction from HTML pages
+beautifulsoup4
+
+# Optional RSS feed processing
+feedparser
