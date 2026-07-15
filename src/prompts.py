@@ -130,6 +130,18 @@ Strict grounding and output rules:
 
 - Use only the information provided in the retrieved news.
 - Do not add facts from general knowledge.
+- The selected country is search context, not factual evidence.
+- Never mention the selected country unless its name appears explicitly
+  in the retrieved news.
+- If the retrieved news discusses European or international developments,
+  describe them as European or international developments.
+- Do not localize general news to the selected country.
+- Do not claim that a development affects, occurs in or applies specifically
+  to the selected country unless the retrieved news explicitly says so.
+- Do not infer compliance obligations, penalties or legal consequences
+  unless they are explicitly mentioned in the retrieved news.
+- Do not convert a publication date into a regulatory effective date
+  or the date when a development occurred.
 - If a date, deadline, cost, penalty, stakeholder, risk or opportunity
   is not supported by the retrieved news, do not include it.
 - If there is not enough information to complete a section reliably,
@@ -160,24 +172,30 @@ Return exactly this JSON structure:
 
 Requirements for "summary":
 
-- Summarize the most relevant developments.
-- Focus on the selected country and timeframe.
+- Summarize only the developments explicitly described in the retrieved news.
+- Mention the selected country only when its name appears explicitly in the retrieved news.
+- Treat the timeframe only as the search period, not as proof that every development occurred during that period.
+- Do not localize general European news to the selected country.
 - Explain the context clearly.
 - Keep it concise and suitable for an executive audience.
 
 Requirements for "impact":
 
-Requirements for "impact":
-
-- Explain why the developments matter to the shipping industry.
+- Explain only the business implications that are explicitly supported
+  by the retrieved news.
+- Do not infer financial consequences, reputational effects,
+  compliance actions or operational changes unless they are
+  explicitly mentioned.
 - Mention affected stakeholders only when supported by the news.
 - Cover risks, costs, operational effects, opportunities and deadlines
   only when supported by the source material.
-- Include practical considerations when appropriate.
+- Do not recommend investments, upgrades, compliance actions or operational
+  changes unless the retrieved news explicitly recommends or requires them.
+- If no source-supported action is available, omit Practical Actions.
 - Clearly indicate uncertainty when the evidence is limited.
 - Structure the business impact using short Markdown headings and bullet points.
 - Use these headings only when the information is supported:
-  Affected Stakeholders, Risks, Opportunities, Costs, Deadlines,
+  Affected Stakeholders, Risks, Opportunities, Costs, Deadlines
   and Practical Actions.
 - Omit any heading that is not supported by the source material.
 
@@ -185,11 +203,19 @@ Requirements for "podcast_script":
 
 - Contain between 220 and 280 words.
 - Use natural language suitable for Text-to-Speech.
-- Begin with a short introduction to RegPulse AI.
-- Mention the selected country and timeframe naturally.
+- Begin with a short, neutral introduction to RegPulse AI.
+- Do not describe RegPulse AI as trusted, leading, authoritative
+  or use other promotional claims.
+- Mention the selected country only when the retrieved news explicitly
+  connects the development to that country.
+- Mention the selected timeframe as the period used for the news search,
+  without claiming that every development occurred during that period.
 - Explain the main developments.
-- Explain the most important business implications.
-- End with practical takeaways.
+- Base every statement on the retrieved news.
+- If the source does not mention a consequence, do not infer one.
+- End with a concise source-supported conclusion.
+- Do not recommend actions unless those actions are explicitly supported
+  by the retrieved news.
 - Use normal punctuation suitable for natural speech.
 - Do not include markdown, bullet markers, URLs, code syntax,
   or decorative symbols.
@@ -263,26 +289,66 @@ def build_user_prompt(
         A formatted prompt containing the business context and
         the retrieved news to analyze.
     """
+    # Check whether the selected country is explicitly mentioned
+    # in the retrieved news.
+    country_is_mentioned = (
+        country.casefold() in news_text.casefold()
+    )
 
+    # Do not expose the country name to the model when the source
+    # does not mention it. This prevents unsupported localization.
+    country_context = (
+        country
+        if country_is_mentioned
+        else "Not explicitly mentioned in the retrieved news"
+    )
     # XML-style tags clearly separate the project context,
     # the retrieved news and the final instruction.
     return f"""
 <context>
 Industry: European shipping
 
-Selected EU country:
-{country}
+Country coverage in the retrieved news:
+{country_context}
 
-Selected timeframe:
+Timeframe used as a news search filter:
 {timeframe}
-</context>
 
+Important:
+The country and timeframe above describe the user's search filters.
+They are not factual evidence.
+
+Do not state that a development occurred in, applies to, or affects
+the selected country unless that country is explicitly mentioned
+inside <news_content>.
+
+If the retrieved news is European but does not explicitly mention
+the selected country, describe it only as a European development.
+</context>
 <news_content>
 {news_text}
 </news_content>
 
 <instruction>
 Analyze the retrieved news according to the system instructions.
+
+Before writing, verify every claim against <news_content>.
+
+Do not use the search filters to create facts.
+
+Do not add:
+- country-specific claims absent from the source;
+- penalties;
+- capital investment requirements;
+- reputational benefits;
+- competitive advantages;
+- mandatory upgrades;
+- reporting obligations;
+- operational recommendations;
+
+unless explicitly stated in <news_content>.
+
+Accuracy is more important than completeness.
 
 Return only one valid JSON object.
 
