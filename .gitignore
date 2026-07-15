@@ -1,20 +1,13 @@
-# Local environment variables and API keys
 .env
 
-# Python virtual environments
 .venv/
 venv/
 
-# Python cache files
 __pycache__/
 *.pyc
 
-# macOS system files
 .DS_Store
 
-# VS Code local settings
-.vscode/
-
-# Generated audio files
-# Temporary MP3 files should not be uploaded to GitHub
 output/*.mp3
+
+.vscode/
