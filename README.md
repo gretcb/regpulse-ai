@@ -328,6 +328,36 @@ python -m py_compile app.py
 
 ---
 
+# 🤔 Why These Technologies?
+
+Every technology was selected to balance functionality, simplicity and rapid development within a two-day MVP.
+
+### 🐍 Python
+
+Python was chosen because of its extensive AI ecosystem, clean syntax and excellent support for API integration, making it ideal for rapid AI application development.
+
+### 🤖 OpenAI API
+
+We selected OpenAI because it provides reliable language models capable of generating concise executive summaries, business impact analysis and natural-sounding podcast scripts through a single platform.
+
+### 🎙️ OpenAI Text-to-Speech
+
+OpenAI Text-to-Speech allowed us to transform generated scripts into realistic audio with minimal implementation effort, creating an additional way for users to consume information.
+
+### 🌐 NewsAPI
+
+NewsAPI provided a simple way to retrieve recent news articles and allowed us to focus on designing the retrieval strategy rather than building a complete web crawler.
+
+### 🖥️ Gradio
+
+Gradio enabled us to rapidly build an interactive web interface without requiring frontend development, making it ideal for demonstrating an AI MVP.
+
+### 🔑 python-dotenv
+
+Used to securely manage API keys and environment variables without exposing sensitive information in the source code.
+
+---
+
 # 🚧 Challenges & Solutions
 
 | Challenge | Solution |
@@ -358,28 +388,30 @@ Some of our main learnings include:
 
 # 🚀 Future Improvements
 
-### Short-term
+### 📈 Short-term
 
-- Improve article prioritization.
-- Add additional trusted news sources.
+- Improve article prioritization and relevance scoring.
+- Integrate additional trusted news sources.
 - Enhance dashboard visualizations.
-- Improve audio customization.
+- Improve podcast voice customization.
+- Strengthen error handling and logging.
 
-### Medium-term
+### 🎯 Medium-term
 
 - Export executive briefings as PDF.
-- Email notifications.
+- Email notifications and scheduled reports.
 - Historical briefing archive.
-- User authentication.
+- User authentication and personalized dashboards.
+- Support for multiple languages.
 
-### Long-term
+### ☁️ Long-term
 
-- Integration with official regulatory sources such as EMSA, IMO and EUR-Lex.
+- Integrate official regulatory sources such as EMSA, IMO and EUR-Lex.
 - Multi-source news aggregation.
-- Semantic search.
-- RAG implementation.
+- Semantic search and RAG implementation.
 - Cloud deployment.
 - Enterprise dashboard with historical analytics.
+- Regulatory alerts and real-time monitoring.
 
 ---
 
